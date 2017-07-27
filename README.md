@@ -1,2 +1,2 @@
 # Competitive
-code to problems on competitive sites
+code to problems on competitive coding sites
