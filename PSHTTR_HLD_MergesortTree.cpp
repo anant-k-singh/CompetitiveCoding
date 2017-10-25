@@ -1,3 +1,4 @@
+// AKS
 #include <bits/stdc++.h>
 using namespace std;
  
@@ -8,16 +9,7 @@ vector <int> adj[N], costs[N];
 vector<int > chainArray[N];
 int root, mx, chainNo, chainInd[N], chainHead[N], posInChain[N];
 int depth[N], pa[LN][N], subsize[N];
- 
-#define gc getchar_unlocked
-void scanint(int &x)
-{
-    register int c = gc();
-    x = 0;
-    for(;(c<48 || c>57);c = gc());
-    for(;c>47 && c<58;c = gc()) {x = (x<<1) + (x<<3) + c - 48;}
-}
- 
+
 void Merge(vector<int> &a, vector<int> &b, vector<int> &o){
     int i = 0,j = 0, n1 = a.size(), n2 = b.size();
     while (i < n1 && j < n2)
@@ -130,7 +122,6 @@ void MST::printTree(){
 }
  
 int query_up2(int u, int v, int k, MST * T) {
-    // cout<<"u:"<<u<<" v:"<<v<<endl;
     if(u == v) return 0;
     int uchain, vchain = chainInd[v], ans = 0;
     while(1){
@@ -165,7 +156,6 @@ void query(int u, int v, int k, MST * T) {
         return;
     }
     int lca = LCA(u, v);
-    // cout<<"lca:"<<lca<<endl;
     int ans1 = query_up2(u, lca, k, T);
     int ans2 = query_up2(v, lca, k, T);
     printf("%d\n", ans1^ans2);
@@ -173,7 +163,6 @@ void query(int u, int v, int k, MST * T) {
  
 int ind;
 void HLD(int curNode, int cost, int prev) {
-    // cout<<"HLD:"<<curNode+1<<' '<<cost<<' ';
     if(chainHead[chainNo] == -1){
         chainHead[chainNo] = curNode; // Assign chain head
         ind = 0;
@@ -197,13 +186,12 @@ void HLD(int curNode, int cost, int prev) {
         HLD(sc, ncost, curNode);
  
     for(int i=0; i<adj[curNode].size(); i++) 
-        if(adj[curNode][i] != prev) {
+        if(adj[curNode][i] != prev)
             if(sc != adj[curNode][i]) {
             // New chains at each normal node
                 chainNo++;
                 HLD(adj[curNode][i], costs[curNode][i], curNode);
             }
-        }
 }
  
 void dfs(int cur, int prev, int _depth=0){
@@ -220,13 +208,9 @@ void dfs(int cur, int prev, int _depth=0){
 int main(){
     int t;
     scanf("%d", &t);
-    // scanint(t);
-    // cin>>t;
     while(t--){
         int n;
         scanf("%d", &n);
-        // scanint(n);
-        // cin>>n;
         // Cleaning step, new test case
         for(int i=0; i<N; i++) {
             adj[i].clear();
@@ -237,10 +221,6 @@ int main(){
         }
         int u,v,c;
         scanf("%d %d %d", &u, &v, &c);
-        // scanint(u);
-        // scanint(v);
-        // scanint(c);
-        // cin>>u>>v>>c;
         root = u;
         adj[u].push_back(v);
         costs[u].push_back(c);
@@ -248,16 +228,11 @@ int main(){
         costs[v].push_back(c);
         for(int i=2; i<n; i++) {
             scanf("%d %d %d", &u, &v, &c);
-            // scanint(u);
-            // scanint(v);
-            // scanint(c);
-            // cin>>u>>v>>c;
             adj[u].push_back(v);
             costs[u].push_back(c);
             adj[v].push_back(u);
             costs[v].push_back(c);
         }
-        // cout<<"root:"<<root<<endl;
         chainNo = 0;
         dfs(root, -1); // set up subsize, depth and parent for each node
         HLD(root, 0, -1); // decomposed the tree and create chains
@@ -269,23 +244,14 @@ int main(){
                     pa[i][j] = pa[i-1][pa[i-1][j]];
         
         MST * T = new MST[chainNo+1];
-        for(int i=0;i<=chainNo;++i){
+        for(int i=0;i<=chainNo;++i)
             T[i].setup(i);
-            // T[i].printTree();
-        }
         int q;
         scanf("%d", &q);
-        // scanint(q);
-        // cin>>q;
         int a, b, k;
         while(q--){
             scanf("%d %d %d", &a, &b, &k);
-            // scanint(a);
-            // scanint(b);
-            // scanint(k);
-            // cin>>a>>b>>k;
             query(a, b, k, T);
         }
-        // delete[] T;
     }
-} 
+}
